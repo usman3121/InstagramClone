@@ -36,7 +36,7 @@ class PostModel {
       'postId': postId,
       'caption': caption,
       'imageUrl': imageUrl,
-      'comments': comments?.map((comment) => comment.toJson()).toList(),
+      'comments': comments?.map((comment) => comment.toJson()).toList() ?? [],
     };
   }
 }

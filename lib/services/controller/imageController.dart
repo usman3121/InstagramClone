@@ -24,6 +24,7 @@ class ImagePickerController extends GetxController {
         try {
           await referenceimageToUpload.putFile(File(pickedFile.path));
           imageUrl = await referenceimageToUpload.getDownloadURL();
+          Utils().toastMessage("image downloaded succefull");
         } catch (e) {
           Utils().toastMessage(e.toString());
         }
@@ -46,6 +47,7 @@ class ImagePickerController extends GetxController {
         try {
           await referenceimageToUpload.putFile(File(pickedFile.path));
           imageUrl = await referenceimageToUpload.getDownloadURL();
+          Utils().toastMessage("image downloaded succefull");
         } catch (e) {
           Utils().toastMessage(e.toString());
         }

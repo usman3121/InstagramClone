@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 height: Get.height * 0.03,
               ),
-               HomePageTopBar(userData:userData ,),
+               HomePageTopBar(userData:userData ),
               if (userData.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(15),
@@ -67,7 +67,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 35,
                         backgroundImage: NetworkImage(
-                          //userData.first.profileImagePath??
                           postData.last.imageUrl ??
                               'https://via.placeholder.com/150',
                         ),
@@ -99,16 +98,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(userData.isNotEmpty ? userData[0].userName ?? '' : ''),
-                    Text(userData.isNotEmpty ? userData[0].bio ?? '' : ''),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(userData.isNotEmpty ? userData[0].userName ?? '' : ''),
+                      Text(userData.isNotEmpty ? userData[0].bio ?? '' : ''),
+                    ],
+                  ),
                 ),
-              ),
+
               Padding(
                 padding: const EdgeInsets.all(5),
                 child: Row(

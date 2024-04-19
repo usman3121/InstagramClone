@@ -48,12 +48,15 @@ class PhoneNumberTab extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                   right: 20, left: 20, bottom: 10, top: 10),
-              child: Text(
-                'You may recieve SMS notifications from us for security \n'
-                '                                     and login purposes',
-
-                // Replace with relevant phone number
-                style: TextStyle(fontSize: 13),
+              child: Wrap(
+                children: [
+                  Text(
+                    'You may recieve SMS notifications from us for security and login purposes',
+                    maxLines: 2,
+                    // Replace with relevant phone number
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ]
               ),
             ),
             Padding(

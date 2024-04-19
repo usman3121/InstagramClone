@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:instagram/services/controller/imageController.dart';
 import 'package:instagram/services/controller/registration_controller.dart';
 import 'package:instagram/services/model/post_model.dart';
 import 'package:instagram/services/model/user_model.dart';
+import 'package:instagram/ui/router/app_routes.dart';
 import 'package:uuid/uuid.dart';
 import '../../ui/components/utils.dart';
 import '../model/comment_model.dart';
@@ -18,6 +20,7 @@ class Post_Controller extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? userPostDocumentID;
   String? userDataDocumentID;
+  RxList<PostModel>? postModel;
 
   @override
   void onInit() {
@@ -63,6 +66,43 @@ class Post_Controller extends GetxController {
         .doc(getCurrentUserID())
         .collection('data');
   }
+  RxMap likedPostIds = {}.obs;
+
+  void toggleLike(String postId) async {
+    // Toggle like state
+    if (likedPostIds.containsKey(postId)) {
+      likedPostIds[postId] = !likedPostIds[postId]!;
+    } else {
+      likedPostIds[postId] = true;
+    }
+
+    try {
+      final postRef = userPostCollection().doc(postId);
+      final postSnapshot = await postRef.get();
+      final postData = postSnapshot.data();
+      if (postData is Map<String, dynamic>) {
+        final currentLikes = postData['likeCount'] as int? ?? 0;
+        int updatedLikes;
+        if (likedPostIds[postId]!) {
+          updatedLikes = currentLikes + 1; // Increment like count if liked
+        } else {
+          updatedLikes = currentLikes - 1; // Decrement like count if disliked
+          updatedLikes = updatedLikes.clamp(0, updatedLikes); // Ensure like count is not negative
+        }
+        await postRef.update({'likeCount': updatedLikes});
+      } else {
+        print('Error: Post data is not a Map<String, dynamic>');
+      }
+    } catch (e) {
+      print('Error updating like count: $e');
+    }
+  }
+
+
+
+  bool isPostLiked(String postId) {
+    return likedPostIds.containsKey(postId) ? likedPostIds[postId]! : false;
+  }
 
   Future<void> addCommentToPost(PostModel post) async {
     try {
@@ -75,6 +115,7 @@ class Post_Controller extends GetxController {
         await userPostCollection().doc(post.postId).update({
           'comments':
               post.comments?.map((comment) => comment.toJson()).toList(),
+          // 'comments': FieldValue.arrayUnion([newComment]),
         });
       }
     } catch (e) {
@@ -86,23 +127,24 @@ class Post_Controller extends GetxController {
   Future<void> addPost() async {
     try {
       var uuid = const Uuid();
-      String postId = uuid.v1(); // Generate a v1 (time-based) id
-
+      String postId = uuid.v1();
       String? profileImagePath = imageController.imageUrl;
       if (profileImagePath.isNotEmpty) {
         CommentModel newComment =
         CommentModel(comment: controller.commentController.text);
         List<CommentModel> comments = [newComment];
+
         PostModel model = PostModel(
-          comments: comments,
           imageUrl: imageController.imageUrl,
           caption: 'this is a caption',
-          likeCount: 24,
           postId: postId,
         );
         model.addComment(newComment);
-
+        postModel?.add(model);
+        Utils().toastMessage("data: added sucessful");
+          print(postModel.toString());
         await FirebaseFirestore.instance.collection('post').doc(postId).set(model.toJson());
+        Utils().toastMessage("data added sucessful");
       }
     } catch (e) {
       if (e is FirebaseException) {
@@ -177,7 +219,7 @@ class Post_Controller extends GetxController {
       QuerySnapshot snapshot = await userDataCollection().get();
       snapshot.docs.forEach((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        debugPrint("From getUserData this is get user data $data");
+        //debugPrint("From getUserData this is get user data $data");
         UserModel usermodel = UserModel.fromJson(data);
         userData.add(usermodel);
       /*  debugPrint(
@@ -215,7 +257,7 @@ class Post_Controller extends GetxController {
       QuerySnapshot snapshot = await userPostCollection().get();
       snapshot.docs.forEach((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        debugPrint("From getPosts this is get posts data $data");
+        //debugPrint("From getPosts this is get posts data $data");
         PostModel model = PostModel.fromJson(data);
         posts.add(model);
 /*        debugPrint("From getPosts model List is : ${posts.toString()}");
@@ -232,6 +274,14 @@ class Post_Controller extends GetxController {
       await userPostCollection().doc(postId).delete();
     } catch (e) {
       Utils().toastMessage(e.toString());
+    }
+  }
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+      Get.toNamed(App_Routes.signIn);
+    } catch (e) {
+     Utils().toastMessage(e.toString());
     }
   }
 }

@@ -63,8 +63,8 @@ class _SignInState extends State<SignIn> {
                     print("password is ${controller.passwordController.text}");
                     print("username is ${controller.usernameController.text}");
                    // postController.addUserData();
-                    postController.addPost();
-                    print("posts data added succesfull in signin page");
+                   // postController.addPost();
+                   // print("posts data added succesfull in signin page");
                     //postController.getUserData();
                     postController.getPosts();
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:instagram/services/controller/registration_controller.dart';
 import 'package:instagram/services/model/post_model.dart';
 import '../../services/controller/post_controller.dart';
@@ -35,11 +36,12 @@ class FeedPostCard extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final post = snapshot.data![index];
-                post.comments;
-                String id= post.postId.toString();
+                // Ensure post.comments is not null
+                post.comments ?? 'No comments';
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Card(
+                  child: Obx(()
+                  => Card(
                     color: Colors.black,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -54,14 +56,13 @@ class FeedPostCard extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 20,
                                     backgroundImage: NetworkImage(
-                                      posts.first.imageUrl ??
-                                          'https://via.placeholder.com/150',
+                                      post.imageUrl ?? 'https://via.placeholder.com/150',
                                     ),
                                   ),
                                   const SizedBox(width: 20),
                                   Text(
-                                    userData.first.userName ?? 'username',
-                                    style: TextStyle(
+                                    userData.isNotEmpty ? userData.first.userName ?? 'username' : 'username',
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -69,11 +70,11 @@ class FeedPostCard extends StatelessWidget {
                               ),
                             ),
                             IconButton(onPressed: () async{
-                              await postController.deletePost(post.postId??"'");
+                              await postController.deletePost(post.postId ?? '');
                               print(post.postId.toString());
-                            }, icon: Icon(Icons.delete_outline_outlined)),
+                            }, icon: const Icon(Icons.delete_outline_outlined)),
                             IconButton(
-                              icon: Icon(Icons.more_vert, color: Colors.white),
+                              icon: const Icon(Icons.more_vert, color: Colors.white),
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -93,13 +94,24 @@ class FeedPostCard extends StatelessWidget {
                           alignment: MainAxisAlignment.start,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.favorite,
-                                  color: Colors.white),
-                              onPressed: () {},
+                              icon: postController.isPostLiked(post.postId ?? '')
+                                  ? Icon(Icons.favorite, color: Colors.red)
+                                  : Icon(Icons.favorite_border, color: Colors.white),
+                              onPressed: () {
+                                print('likes getting pressed');
+                                postController.toggleLike(post.postId ?? '');
+                                if (postController.isPostLiked(post.postId ?? '')) {
+                                  print('likes increases');
+                                  post.likeCount = (post.likeCount ?? 0) + 1;
+                                } else {
+                                  print('likes decreases');
+                                  post.likeCount = (post.likeCount ?? 0) - 1;
+                                }
+                                postController.update();
+                              },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.comment,
-                                  color: Colors.white),
+                              icon: const Icon(Icons.comment, color: Colors.white),
                               onPressed: () {
                                 Get.to(() => CommentListWidget(
                                   posts: post.comments,
@@ -107,8 +119,7 @@ class FeedPostCard extends StatelessWidget {
                               },
                             ),
                             IconButton(
-                              icon:
-                              const Icon(Icons.share, color: Colors.white),
+                              icon: const Icon(Icons.share, color: Colors.white),
                               onPressed: () {},
                             ),
                           ],
@@ -120,7 +131,7 @@ class FeedPostCard extends StatelessWidget {
                           decoration: InputDecoration(
                             labelText: 'Add Comment',
                             suffixIcon: IconButton(
-                              icon: Icon(Icons.send), // Icon for sending
+                              icon: const Icon(Icons.send), // Icon for sending
                               onPressed: () async {
                                 await postController.addCommentToPost(post);
                               },
@@ -138,15 +149,9 @@ class FeedPostCard extends StatelessWidget {
                             child: const Text('View all Comments',style: TextStyle(color: Colors.white),),
                           ),
                         ),
-                        /* TextFormField(
-                          controller: commentController.commentController,
-                          decoration: const InputDecoration(
-                            labelText: 'Add Comment',
-                          ),
-                        ),
-                        Text('comments : ${post.comment ?? ''}'),*/
                       ],
                     ),
+                  ),
                   ),
                 );
               },
@@ -159,4 +164,3 @@ class FeedPostCard extends StatelessWidget {
     );
   }
 }
-

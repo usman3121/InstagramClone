@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:instagram/services/model/post_model.dart';
+import 'package:instagram/ui/router/app_routes.dart';
 import '../../../services/controller/imageController.dart';
 import '../../../services/controller/post_controller.dart';
 import '../../../services/model/user_model.dart';
@@ -61,8 +62,9 @@ class CameraScreen extends StatelessWidget {
                   crossAxisCount: 1,
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        controller.pickImageFromCamera();
+                      onTap: () async{
+                        await controller.pickImageFromCamera();
+                         postController.addPost();
                       },
                       child: Container(
                         width: 150,
@@ -84,7 +86,13 @@ class CameraScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => controller.pickImageFromGallery(),
+                      onTap: ()async{
+                        await controller.pickImageFromGallery();
+                        await postController.addPost();
+                        print(postController.addPost.toString());
+                        await Get.toNamed(App_Routes.HomePage);
+
+                      },
                       child: Container(
                         width: 150,
                         padding: const EdgeInsets.all(8),
@@ -161,10 +169,10 @@ class CameraScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){
         //postController.addUserData();
-        postController.addPost();
+        //postController.addPost();
         postController.update();
-        print("hello from user model : ${users.followers.toString()}");
-        Get.to(const BottomNavigationScreen());
+        //print("hello from user model : ${users.followers.toString()}");
+        //Get.to(const BottomNavigationScreen());
       },child: Icon(Icons.add),),
     );
   }
