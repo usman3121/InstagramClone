@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../services/model/user_model.dart';
+
 class HomePageTopBar extends StatelessWidget {
   const HomePageTopBar({
-    super.key,
+    super.key, required this.userData,
   });
+  final List<UserModel> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +19,8 @@ class HomePageTopBar extends StatelessWidget {
               color: Colors.white),
           onPressed: () {},
         ),
-        Text('Username'),
-        SizedBox(width: Get.width * 0.12,),
+        Text(userData.first.userName?? "",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w800),),
+        SizedBox(width: Get.width * 0.08,),
         IconButton(
           icon: const Icon(Icons.alternate_email,
               color: Colors.white),

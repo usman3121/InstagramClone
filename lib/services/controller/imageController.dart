@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:instagram/ui/components/utils.dart';
 import 'package:uuid/uuid.dart';
 
 class ImagePickerController extends GetxController {
@@ -21,41 +22,36 @@ class ImagePickerController extends GetxController {
         Reference referenceimageToUpload =
             referenceDirImage.child(uniqueImageId);
         try {
-          print('start downloding  : ');
           await referenceimageToUpload.putFile(File(pickedFile.path));
           imageUrl = await referenceimageToUpload.getDownloadURL();
-          print('Sucesfully downloded done : ');
         } catch (e) {
-          print('Error downloading the image : $e');
+          Utils().toastMessage(e.toString());
         }
       }
     } catch (e) {
-      print('Error picking image from gallery: $e');
+      Utils().toastMessage(e.toString());
     }
   }
 
   Future<void> pickImageFromCamera() async {
-    String uniqueImageId = Uuid().v4();
+    String uniqueImageId = const Uuid().v4();
     try {
       final pickedFile = await _picker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         galleryImages.add(pickedFile.path);
-        print("hello this is gallery images : ${galleryImages}");
         Reference referenceroot = FirebaseStorage.instance.ref();
         Reference referenceDirImage = referenceroot.child('images');
         Reference referenceimageToUpload =
             referenceDirImage.child(uniqueImageId);
         try {
-          print('start downloding  : ');
           await referenceimageToUpload.putFile(File(pickedFile.path));
           imageUrl = await referenceimageToUpload.getDownloadURL();
-          print('Sucesfully downloded done : ');
         } catch (e) {
-          print('Error downloading the image : $e');
+          Utils().toastMessage(e.toString());
         }
       }
     } catch (e) {
-      print('Error picking image from camera: $e');
+      Utils().toastMessage(e.toString());
     }
   }
 }

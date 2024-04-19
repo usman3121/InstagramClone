@@ -22,7 +22,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   final UserModel users = UserModel();
 
   static final List<Widget> _pages = [
-    const InstaFeed(),
+     InstaFeed(),
     SearchScreen(),
     CameraScreen(),
     const ProfileScreen(),

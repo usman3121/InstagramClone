@@ -18,8 +18,8 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
-    registerController.usernameController.text = widget.username ?? '';
-    registerController.bioController.text = widget.bio ?? '';
+    registerController.usernameController.text = widget.username ?? 'username';
+    registerController.bioController.text = widget.bio ?? 'bio';
 
     super.initState();
   }

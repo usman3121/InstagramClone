@@ -6,6 +6,7 @@ import 'package:instagram/ui/screens/homepage_profile_screens/edit_profile.dart'
 import '../../../services/controller/post_controller.dart';
 import '../../../services/controller/registration_controller.dart';
 import '../../../services/controller/stories_controller.dart';
+import '../../../services/model/post_model.dart';
 import '../../../services/model/user_model.dart';
 import '../../components/homepagetopbar.dart';
 import '../../components/tabs.dart';
@@ -25,17 +26,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePickerController imageController =
       Get.put(ImagePickerController());
   List<UserModel> userData = [];
+  List<PostModel> postData =[];
 
   @override
   void initState() {
     super.initState();
     fetchUserData();
+    fetchPostData();
   }
 
   Future<void> fetchUserData() async {
     RxList data = await postController.getUserData();
     setState(() {
       userData = data as List<UserModel>;
+    });
+  }
+  Future<void> fetchPostData() async {
+    List data = await postController.getPosts();
+    setState(() {
+      postData = data as List<PostModel>;
     });
   }
 
@@ -49,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 height: Get.height * 0.03,
               ),
-              const HomePageTopBar(),
+               HomePageTopBar(userData:userData ,),
               if (userData.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(15),
@@ -59,14 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         radius: 35,
                         backgroundImage: NetworkImage(
                           //userData.first.profileImagePath??
-                          userData.last.profileImagePath ??
+                          postData.last.imageUrl ??
                               'https://via.placeholder.com/150',
                         ),
                       ),
                       Expanded(
                         child: Column(
                           children: [
-                            Text("${userData.length}"),
+                            Text("${postData.length}"),
                             const Text("posts"),
                           ],
                         ),
@@ -190,8 +199,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Column(
                             children: [
                               Expanded(
-                                child: FutureBuilder<RxList<UserModel>>(
-                                  future: postController.getUserData(),
+                                child: FutureBuilder<List<PostModel>>(
+                                  future: postController.getPosts(),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -219,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             return Card(
                                               color: Colors.black,
                                               child: Image.network(
-                                                post.profileImagePath ??
+                                                post.imageUrl ??
                                                     'https://via.placeholder.com/150',
                                                 fit: BoxFit.cover,
                                               ),

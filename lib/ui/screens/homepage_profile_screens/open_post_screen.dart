@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../services/controller/post_controller.dart';
+import '../../../services/model/post_model.dart';
 import '../../../services/model/user_model.dart';
 import '../../components/feed_post_card.dart';
 
@@ -15,6 +16,9 @@ class _OpenPostScreenState extends State<OpenPostScreen> {
   final Post_Controller postController = Get.put(Post_Controller());
   List<UserModel> userData = [];
 
+  final PostModel post = PostModel();
+  List<PostModel> postData =[];
+
   @override
   void initState() {
     super.initState();
@@ -22,9 +26,10 @@ class _OpenPostScreenState extends State<OpenPostScreen> {
   }
 
   Future<void> fetchUserData() async {
-    List<UserModel> data = await postController.getUserData();
+    // List<UserModel> data = await postController.getUserData();
+    List<PostModel> data = await postController.getPosts();
     setState(() {
-      userData = data;
+      postData = data;
     });
   }
   @override
@@ -45,7 +50,7 @@ class _OpenPostScreenState extends State<OpenPostScreen> {
         ),backgroundColor: Colors.black,),
       body: Column(
         children: [
-          FeedPostCard(postController: postController, userData: userData),
+          FeedPostCard(postController: postController, userData: userData,posts: postData,),
 
         ],
       ),

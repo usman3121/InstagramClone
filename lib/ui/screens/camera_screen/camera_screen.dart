@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:instagram/services/model/post_model.dart';
 import '../../../services/controller/imageController.dart';
 import '../../../services/controller/post_controller.dart';
 import '../../../services/model/user_model.dart';
@@ -12,6 +13,7 @@ class CameraScreen extends StatelessWidget {
   CameraScreen({super.key});
  final Post_Controller postController = Get.put(Post_Controller());
   final UserModel users = UserModel();
+  final PostModel post =PostModel();
   @override
   Widget build(BuildContext context) {
     final ImagePickerController controller = Get.put(ImagePickerController());
@@ -32,8 +34,10 @@ class CameraScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      postController.addUserData();
-                      print("hello from user model : ${users.followers.toString()}");
+                      //postController.addUserData();
+                      postController.addPost();
+                      //print("hello from user model : ${users.followers.toString()}");
+                      print("hello from post model printing image url: ${post.imageUrl.toString()}");
                       Get.to(const BottomNavigationScreen());
                     },
                   ),
@@ -156,7 +160,8 @@ class CameraScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){
-        postController.addUserData();
+        //postController.addUserData();
+        postController.addPost();
         postController.update();
         print("hello from user model : ${users.followers.toString()}");
         Get.to(const BottomNavigationScreen());

@@ -1,26 +1,42 @@
-class PostModel {
-  String userName;
-  String? comments;
-  int? likesCount;
-  String? captions;
+import 'package:get/get.dart';
 
-  PostModel(
-      {required this.userName, this.comments, this.likesCount, this.captions});
+import 'comment_model.dart';
+class PostModel {
+  String? postId;
+  String? caption;
+  String? imageUrl;
+  RxList<CommentModel>? comments;
+  int? likeCount ;
+  PostModel({
+    this.postId,
+    this.caption,
+    this.imageUrl,
+    List<CommentModel>? comments,
+    this.likeCount
+  }): comments = comments != null ? RxList<CommentModel>.from(comments) : RxList<CommentModel>();
+
+  void addComment(CommentModel comment) {
+    comments?.add(comment);
+  }
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-        userName: json['userName'],
-        comments: json['comments'],
-        likesCount: json['likesCount'],
-        captions: json['captions']);
+      postId: json['postId'] as String?,
+      likeCount: json['likeCount'] as int?,
+      caption: json['caption'] as String?,
+      imageUrl: json['imageUrl'] as String?,
+      comments: (json['comments'] as List<dynamic>?)
+          ?.map((commentJson) => CommentModel.fromJson(commentJson as Map<String, dynamic>))
+          .toList(),
+    );
   }
 
-  Map<String, dynamic> tojson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['userName'] = userName as String;
-    data['comments'] = comments as String;
-    data['likesCount'] = likesCount as int;
-    data['captions'] = captions as String;
-    return data;
+  Map<String, dynamic> toJson() {
+    return {
+      'postId': postId,
+      'caption': caption,
+      'imageUrl': imageUrl,
+      'comments': comments?.map((comment) => comment.toJson()).toList(),
+    };
   }
 }

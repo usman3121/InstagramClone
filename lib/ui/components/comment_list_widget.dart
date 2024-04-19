@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../services/controller/post_controller.dart';
-import '../../services/model/user_model.dart'; // Import your user model
+import 'package:instagram/services/model/comment_model.dart';
 
 class CommentListWidget extends StatelessWidget {
-  final List<UserModel> userData;
+  final List<CommentModel>? posts; 
 
-  CommentListWidget({required this.userData, });
+  CommentListWidget({required this.posts});
 
   @override
   Widget build(BuildContext context) {
@@ -15,22 +12,20 @@ class CommentListWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text('Comments'),
       ),
-      body: ListView.builder(
-        itemCount: userData.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('User: ${userData[index].userName ?? "Unknown"}',style: TextStyle(color: Colors.white)),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(" comments are :${userData[index].comment ?? 'no comments'} ",style: TextStyle(color: Colors.white),),
-              ],
+      body: posts != null
+          ? ListView.builder(
+              itemCount: posts!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('User: ${posts![index].comment ?? "PostId"}',
+                      style: TextStyle(color: Colors.white)),
+                  subtitle: Text(posts!.length.toString()),
+                );
+              },
+            )
+          : Center(
+              child: Text('No comments available'),
             ),
-          );
-        },
-      ),
-
     );
   }
 }
-
