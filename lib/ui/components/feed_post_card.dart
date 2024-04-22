@@ -10,44 +10,42 @@ import 'post_menu.dart';
 
 class FeedPostCard extends StatelessWidget {
   FeedPostCard({
-    Key? key,
-    required this.postController,
-    required this.userData,
-    required this.posts,
+    Key? key, required this.userData
   }) : super(key: key);
 
-  final Post_Controller postController;
+  final Post_Controller postController = Get.put(Post_Controller());
   final List<UserModel> userData;
-  final List<PostModel> posts;
+
   RegistrationController commentController = Get.put(RegistrationController());
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: FutureBuilder<List<PostModel>>(
-        future: postController.getPosts(),
+      child: StreamBuilder<List<PostModel>>(
+        stream: postController.fetchPost(), // Stream of posts
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
+          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            print('Received ${snapshot.data!.length} posts');
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final post = snapshot.data![index];
-                // Ensure post.comments is not null
-                post.comments ?? 'No comments';
+                print(
+                    "dkjszidsiusdifuhidsfhidsfuisdfublidsfabibl$postController.postModelRxList![index]");
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Obx(()
-                  => Card(
+                  child: Card(
                     color: Colors.black,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -56,12 +54,16 @@ class FeedPostCard extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 20,
                                     backgroundImage: NetworkImage(
-                                      post.imageUrl ?? 'https://via.placeholder.com/150',
+                                      post.imageUrl ??
+                                          'https://via.placeholder.com/150',
                                     ),
                                   ),
                                   const SizedBox(width: 20),
                                   Text(
-                                    userData.isNotEmpty ? userData.first.userName ?? 'username' : 'username',
+                                    userData.isNotEmpty
+                                        ? userData.first.userName ??
+                                        'username'
+                                        : 'username',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -69,17 +71,25 @@ class FeedPostCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            IconButton(onPressed: () async{
-                              await postController.deletePost(post.postId ?? '');
-                              print(post.postId.toString());
-                            }, icon: const Icon(Icons.delete_outline_outlined)),
                             IconButton(
-                              icon: const Icon(Icons.more_vert, color: Colors.white),
+                                onPressed: () async {
+                                  await postController
+                                      .deletePost(post.postId ?? '');
+                                  print(post.postId.toString());
+                                },
+                                icon: const Icon(
+                                    Icons.delete_outline_outlined)),
+                            IconButton(
+                              icon: const Icon(Icons.more_vert,
+                                  color: Colors.white),
                               onPressed: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return InstagramPostMenu(postId: post.postId, postController: postController,); // Your custom dialog widget
+                                    return InstagramPostMenu(
+                                      postId: post.postId,
+                                      postController: postController,
+                                    ); // Your custom dialog widget
                                   },
                                 );
                               },
@@ -87,31 +97,40 @@ class FeedPostCard extends StatelessWidget {
                           ],
                         ),
                         Image.network(
-                          post.imageUrl ?? 'https://via.placeholder.com/150',
+                          post.imageUrl ??
+                              'https://via.placeholder.com/150',
                           fit: BoxFit.cover,
                         ),
                         ButtonBar(
                           alignment: MainAxisAlignment.start,
                           children: [
                             IconButton(
-                              icon: postController.isPostLiked(post.postId ?? '')
-                                  ? Icon(Icons.favorite, color: Colors.red)
-                                  : Icon(Icons.favorite_border, color: Colors.white),
+                              icon: postController
+                                  .isPostLiked(post.postId ?? '')
+                                  ? Icon(Icons.favorite,
+                                  color: Colors.red)
+                                  : Icon(Icons.favorite_border,
+                                  color: Colors.white),
                               onPressed: () {
                                 print('likes getting pressed');
-                                postController.toggleLike(post.postId ?? '');
-                                if (postController.isPostLiked(post.postId ?? '')) {
+                                postController
+                                    .toggleLike(post.postId ?? '');
+                                if (postController
+                                    .isPostLiked(post.postId ?? '')) {
                                   print('likes increases');
-                                  post.likeCount = (post.likeCount ?? 0) + 1;
+                                  post.likeCount =
+                                      (post.likeCount ?? 0) + 1;
                                 } else {
                                   print('likes decreases');
-                                  post.likeCount = (post.likeCount ?? 0) - 1;
+                                  post.likeCount =
+                                      (post.likeCount ?? 0) - 1;
                                 }
                                 postController.update();
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.comment, color: Colors.white),
+                              icon: const Icon(Icons.comment,
+                                  color: Colors.white),
                               onPressed: () {
                                 Get.to(() => CommentListWidget(
                                   posts: post.comments,
@@ -119,21 +138,26 @@ class FeedPostCard extends StatelessWidget {
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.share, color: Colors.white),
+                              icon: const Icon(Icons.share,
+                                  color: Colors.white),
                               onPressed: () {},
                             ),
                           ],
                         ),
                         Text("Total Likes: ${post.likeCount ?? 0}"),
-                        Text("Captions: ${post.caption ?? 'No caption'}"),
+                        Text(
+                            "Captions: ${post.caption ?? 'No caption'}"),
                         TextFormField(
-                          controller: commentController.commentController,
+                          controller:
+                          commentController.commentController,
                           decoration: InputDecoration(
                             labelText: 'Add Comment',
                             suffixIcon: IconButton(
-                              icon: const Icon(Icons.send), // Icon for sending
+                              icon: const Icon(
+                                  Icons.send), // Icon for sending
                               onPressed: () async {
-                                await postController.addCommentToPost(post);
+                                await postController
+                                    .addCommentToPost(post);
                               },
                             ),
                           ),
@@ -146,12 +170,14 @@ class FeedPostCard extends StatelessWidget {
                                 posts: post.comments,
                               ));
                             },
-                            child: const Text('View all Comments',style: TextStyle(color: Colors.white),),
+                            child: const Text(
+                              'View all Comments',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
                   ),
                 );
               },

@@ -3,52 +3,54 @@ import 'package:flutter/material.dart';
 
 import '../services/model/post_model.dart';
 
-import 'package:flutter/material.dart';
-
-class PostCard extends StatelessWidget {
-  final Post post;
-
-  const PostCard({Key? key, required this.post}) : super(key: key);
+class test extends StatefulWidget {
+  const test({super.key});
 
   @override
+  State<test> createState() => _testState();
+}
+
+class _testState extends State<test> {
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              post.title ?? 'No Title',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              post.content ?? 'No Content',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Comments:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: post.comments
-                      ?.map((comment) => Text(
-                            '- ${comment.text}',
-                            style: TextStyle(fontSize: 14),
-                          ))
-                      .toList() ??
-                  [],
-            ),
-          ],
-        ),
+    return Scaffold(
+      body:  StreamBuilder<List<PostModel>>(
+        stream: postController.fetchPost(), // Stream of posts
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            print('Received ${snapshot.data!.length} posts');
+            return
+              GridView.builder(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final post = snapshot.data![index];
+                  return Card(
+                    color: Colors.black,
+                    child: Image.network(
+                      post.imageUrl ??
+                          'https://via.placeholder.com/150',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              );
+
+          } else {
+            return const Center(child: Text('No posts available'));
+          }
+        },
       ),
     );
   }
 }
-
 */

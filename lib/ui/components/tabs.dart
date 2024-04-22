@@ -4,7 +4,6 @@ import 'package:instagram/ui/components/cutom_button.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../services/controller/registration_controller.dart';
 import 'custom_text_form_field.dart';
-import 'package:instagram/services/model/user_model.dart';
 
 final RegistrationController controller = Get.put(RegistrationController());
 

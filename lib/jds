@@ -221,30 +221,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       print('Received ${snapshot.data!
                                           .length} posts');
                                       return
-                                        GestureDetector(
-                                          onTap: () {
-                                            Get.to(const OpenPostScreen());
-                                          },
-                                          child: GridView.builder(
-                                            gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 8.0,
-                                              mainAxisSpacing: 8.0,
-                                            ),
-                                            itemCount: snapshot.data!.length,
-                                            itemBuilder: (context, index) {
-                                              final post = snapshot.data![index];
-                                              return Card(
-                                                color: Colors.black,
-                                                child: Image.network(
-                                                  post.imageUrl ??
-                                                      'https://via.placeholder.com/150',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            },
+                                        GridView.builder(
+                                          gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3,
+                                            crossAxisSpacing: 8.0,
+                                            mainAxisSpacing: 8.0,
                                           ),
+                                          itemCount: snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            final post = snapshot.data![index];
+                                            return Card(
+                                              color: Colors.black,
+                                              child: Image.network(
+                                                post.imageUrl ??
+                                                    'https://via.placeholder.com/150',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
+                                          },
                                         );
                                     } else {
                                       return const Center(

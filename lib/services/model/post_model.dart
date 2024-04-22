@@ -13,7 +13,7 @@ class PostModel {
     this.imageUrl,
     List<CommentModel>? comments,
     this.likeCount
-  }): comments = comments != null ? RxList<CommentModel>.from(comments) : RxList<CommentModel>();
+  }): comments = RxList<CommentModel>.from(comments ?? []);
 
   void addComment(CommentModel comment) {
     comments?.add(comment);

@@ -45,8 +45,8 @@ class _EditProfileState extends State<EditProfile> {
                 registerController.bioController.text.toString());
             print(
                 'userNameController is: ${registerController.usernameController.text}, '
-                'widget id is: ${widget.docId ?? ''}, '
-                'bioController is: ${registerController.bioController.text}');
+                    'widget id is: ${widget.docId ?? ''}, '
+                    'bioController is: ${registerController.bioController.text}');
 
             Get.back();
           },

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:instagram/ui/components/utils.dart';
 import 'package:instagram/ui/router/app_routes.dart';
-import 'package:instagram/ui/screens/registry/signup/add_phone_email.dart';
 import '../../../../services/controller/registration_controller.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';

@@ -1,6 +1,6 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:instagram/services/controller/imageController.dart';
@@ -20,14 +20,33 @@ class Post_Controller extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? userPostDocumentID;
   String? userDataDocumentID;
-  RxList<PostModel>? postModel;
+  RxList<PostModel>? postModelRxList;
 
+  Stream<List<PostModel>> fetchPost() async* {
+    try {
+      Stream<QuerySnapshot> snapshots = userPostCollection().snapshots();
+      await for (QuerySnapshot snapshot in snapshots) {
+        List<PostModel> posts = [];
+        for (QueryDocumentSnapshot doc in snapshot.docs) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          PostModel model = PostModel.fromJson(data);
+          posts.add(model);
+        }
+        yield posts;
+      }
+    } catch (e) {
+      Utils().toastMessage(e.toString());
+    }
+  }
   @override
   void onInit() {
     super.onInit();
     fetchUserPostDocumentID().then((_) => update());
     fetchUserDataDocumentID().then((_) => update());
+    fetchPost();
   }
+
+
 
   Future<void> fetchUserPostDocumentID() async {
     QuerySnapshot snapshot = await _firestore.collection('post').get();
@@ -51,6 +70,7 @@ class Post_Controller extends GetxController {
     await fetchUserPostDocumentID();
     return userPostDocumentID;
   }
+
 
   String? getCurrentUserID() {
     return _auth.currentUser?.uid;
@@ -97,9 +117,6 @@ class Post_Controller extends GetxController {
       print('Error updating like count: $e');
     }
   }
-
-
-
   bool isPostLiked(String postId) {
     return likedPostIds.containsKey(postId) ? likedPostIds[postId]! : false;
   }
@@ -123,71 +140,35 @@ class Post_Controller extends GetxController {
     }}
 
 
-
   Future<void> addPost() async {
     try {
       var uuid = const Uuid();
       String postId = uuid.v1();
       String? profileImagePath = imageController.imageUrl;
       if (profileImagePath.isNotEmpty) {
-        CommentModel newComment =
-        CommentModel(comment: controller.commentController.text);
-        List<CommentModel> comments = [newComment];
-
-        PostModel model = PostModel(
-          imageUrl: imageController.imageUrl,
-          caption: 'this is a caption',
-          postId: postId,
-        );
-        model.addComment(newComment);
-        postModel?.add(model);
-        Utils().toastMessage("data: added sucessful");
-          print(postModel.toString());
-        await FirebaseFirestore.instance.collection('post').doc(postId).set(model.toJson());
-        Utils().toastMessage("data added sucessful");
+          CommentModel newComment =
+          CommentModel(comment: controller.commentController.text);
+          PostModel model = PostModel(
+            imageUrl: imageController.imageUrl,
+            caption: 'this is a caption',
+            postId: postId,
+          );
+          model.addComment(newComment);
+          postModelRxList?.add(model);
+          Utils().toastMessage("data: added sucessful");
+          print(postModelRxList.toString());
+          await FirebaseFirestore.instance.collection('post').doc(postId).set(model.toJson());
+          Utils().toastMessage("data added sucessful");
       }
     } catch (e) {
+      print ('data failed to add' );
+      Utils().toastMessage("data failed to add");
       if (e is FirebaseException) {
       } else {
       }
       Utils().toastMessage(e.toString());
     }
   }
-
-
-
-
-
-/*  Future<void> addPost() async {
-    try {
-      String postId = await getUserPostDocumentID() ?? '';
-      String? profileImagePath = imageController.imageUrl;
-      if (profileImagePath.isNotEmpty && postId != null) {
-        CommentModel newComment =
-            CommentModel(comment: controller.commentController.text);
-        List<CommentModel> comments = [newComment];
-        print("new comment $newComment");
-        print("comment list : $comments");
-        PostModel model = PostModel(
-          comments: comments,
-          imageUrl: imageController.imageUrl,
-          caption: 'this is a caption',
-          likeCount: 24,
-          postId: postId,
-        );
-        model.addComment(newComment);
-
-        await userPostCollection().add(model.toJson());
-      }
-    } catch (e) {
-      if (e is FirebaseException) {
-        print('Firebase Error: ${e.code} - ${e.message}');
-      } else {
-        print('Error: $e');
-      }
-      Utils().toastMessage(e.toString());
-    }
-  }*/
 
   Future<void> addUserData() async {
     try {
@@ -219,12 +200,8 @@ class Post_Controller extends GetxController {
       QuerySnapshot snapshot = await userDataCollection().get();
       snapshot.docs.forEach((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        //debugPrint("From getUserData this is get user data $data");
         UserModel usermodel = UserModel.fromJson(data);
         userData.add(usermodel);
-      /*  debugPrint(
-            "From getUserData user model List is : ${userData.toString()}");
-        debugPrint("user model data is : $usermodel");*/
       });
     } catch (e) {
       Utils().toastMessage(e.toString());
@@ -251,18 +228,16 @@ class Post_Controller extends GetxController {
     }
   }
 
-  Future<List<PostModel>> getPosts() async {
-    List<PostModel> posts = [];
+
+  RxList<PostModel> posts = <PostModel>[].obs;
+  Future<RxList<PostModel>> getPosts() async {
+
     try {
       QuerySnapshot snapshot = await userPostCollection().get();
       snapshot.docs.forEach((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        //debugPrint("From getPosts this is get posts data $data");
         PostModel model = PostModel.fromJson(data);
         posts.add(model);
-/*        debugPrint("From getPosts model List is : ${posts.toString()}");
-        debugPrint("post model data is : ${model.toString()}");*/
-        //print(model);
       });
     } catch (e) {
       Utils().toastMessage(e.toString());
