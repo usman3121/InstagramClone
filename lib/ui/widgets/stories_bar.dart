@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/services/controller/post_controller.dart';
+import 'package:instagram/ui/screens/homepage_profile_screens/controller/post_controller.dart';
 
-import '../../ui/components/utils.dart';
-import '../model/user_model.dart';
+import '../utils/message toaster/utils.dart';
+import '../../services/model/user_model.dart';
 
 class StoriesBar extends StatelessWidget {
   const StoriesBar({
@@ -10,7 +10,7 @@ class StoriesBar extends StatelessWidget {
     required this.postController,
   });
 
-  final Post_Controller postController;
+  final PostController postController;
 
   @override
   Widget build(BuildContext context) {

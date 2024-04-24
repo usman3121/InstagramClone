@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram/ui/components/cutom_button.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import '../../services/controller/registration_controller.dart';
+import '../screens/registry/controller/registration_controller.dart';
 import 'custom_text_form_field.dart';
 
-final RegistrationController controller = Get.put(RegistrationController());
+final RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
 
 class PhoneNumberTab extends StatelessWidget {
   const PhoneNumberTab({super.key});

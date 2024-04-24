@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 
-import '../../ui/router/app_routes.dart';
-import '../../ui/screens/bottom_navigation_screen.dart';
-import '../../ui/screens/registry/signIn/signin.dart';
-import '../../ui/screens/registry/signup/add_phone_email.dart';
-import '../../ui/screens/registry/signup/passwoard_screen.dart';
-import '../../ui/screens/registry/signup/sign_up.dart';
+import '../../screens/bottom_navigation_screen.dart';
+import '../../screens/registry/signIn/signin.dart';
+import '../../screens/registry/signup/add_phone_email.dart';
+import '../../screens/registry/signup/passwoard_screen.dart';
+import '../../screens/registry/signup/sign_up.dart';
+import 'app_routes.dart';
+
 
 class GetAppRouter{
 

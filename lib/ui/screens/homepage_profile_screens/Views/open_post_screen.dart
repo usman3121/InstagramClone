@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import '../../../services/controller/post_controller.dart';
-import '../../../services/model/post_model.dart';
-import '../../../services/model/user_model.dart';
-import '../../components/feed_post_card.dart';
+import 'package:instagram/services/model/post_model.dart';
+import 'package:instagram/ui/screens/homepage_profile_screens/controller/post_controller.dart';
+import '../../../../services/model/user_model.dart';
+import '../../../widgets/feed_post_card.dart';
 
 class OpenPostScreen extends StatefulWidget {
   const OpenPostScreen({super.key});
@@ -14,7 +13,7 @@ class OpenPostScreen extends StatefulWidget {
 }
 
 class _OpenPostScreenState extends State<OpenPostScreen> {
-  final Post_Controller postController = Get.put(Post_Controller());
+  final PostController postController = Get.put(PostController());
   List<UserModel> userData = [];
 
   final PostModel post = PostModel();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram/services/controller/router_controller.dart';
+import 'package:instagram/ui/config/router/app_routes.dart';
+import 'package:instagram/ui/config/router/router_controller.dart';
 import 'package:instagram/ui/components/bottom_navigation_bar.dart';
-import 'package:instagram/ui/router/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram/services/controller/post_controller.dart';
+import 'package:instagram/ui/screens/homepage_profile_screens/controller/post_controller.dart';
+import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
 
 import '../../services/model/user_model.dart';
 
@@ -11,7 +12,7 @@ class HomePageTopBar extends StatelessWidget {
   });
 
   final List<UserModel> userData;
-  Post_Controller controller = Get.put(Post_Controller());
+ RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
 
   @override
   Widget build(BuildContext context) {

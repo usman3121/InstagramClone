@@ -1,4 +1,3 @@
-
 class UserModel {
   int? totalPost;
   int? followers;
@@ -12,7 +11,7 @@ class UserModel {
   @override
   String toString() {
     return 'UserModel{totalPost: $totalPost, followers: $followers, following: $following, userName: $userName,'
-        ' bio: $bio, profileImagePath: $profileImagePath, comment: $comment,}';
+        ' bio: $bio, profileImagePath: $profileImagePath, comment: $comment, userId: $userId}';
   }
 
   UserModel({
@@ -23,6 +22,7 @@ class UserModel {
     this.bio,
     this.profileImagePath,
     this.comment,
+    this.userId,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -39,10 +39,10 @@ class UserModel {
             : null,
         userName: json['userName'],
         bio: json['bio'] as String?,
-        profileImagePath: json['profileImagePath']as String?,
-        comment: json['comment'] != null
-            ? List<String>.from(json['comment'])
-            : null,
+        profileImagePath: json['profileImagePath'] as String?,
+        comment:
+            json['comment'] != null ? List<String>.from(json['comment']) : null,
+        userId: json['userId'] as String?,
       );
     } catch (e) {
       print('Error in UserModel.fromJson: $e');
@@ -50,15 +50,16 @@ class UserModel {
     }
   }
 
-  Map<String, dynamic> tojson() {
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['userName'] = userName as String;
     data['followers'] = followers as int;
     data['totalPost'] = totalPost as int;
     data['following'] = following as int;
     data['bio'] = bio as String;
-    data['profileImagePath'] = profileImagePath ;
-    data['comment'] = comment ?? [] ;
+    data['profileImagePath'] = profileImagePath;
+    data['comment'] = comment ?? [];
+    data['userId'] = userId ?? [];
     return data;
   }
 }

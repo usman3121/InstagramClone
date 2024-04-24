@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram/ui/screens/insta_feed.dart';
-import '../../services/controller/post_controller.dart';
-import '../../services/controller/stories_controller.dart';
+import 'homepage_profile_screens/controller/post_controller.dart';
 import '../../services/model/user_model.dart';
 import 'camera_screen/camera_screen.dart';
-import 'homepage_profile_screens/profile_screen.dart';
+import 'homepage_profile_screens/Views/profile_screen.dart';
 import 'searchscreen/searchscreen.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
@@ -17,8 +16,7 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _selectedIndex = 0;
-  final Stories_Controller storiesController = Get.put(Stories_Controller());
-  final Post_Controller postController = Get.put(Post_Controller());
+  final PostController postController = Get.put(PostController());
   final UserModel users = UserModel();
 
   static final List<Widget> _pages = [
@@ -39,7 +37,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         break;
       case 3:
         postController.getUserData();
-        print("hello from user model : ${users.tojson()}");
+        print("hello from user model : ${users.toJson()}");
 
         break;
       case 4:

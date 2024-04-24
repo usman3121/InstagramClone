@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram/ui/router/app_routes.dart';
-import '../../../../services/controller/registration_controller.dart';
+import 'package:instagram/ui/screens/homepage_profile_screens/controller/post_controller.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';
+import '../../../config/router/app_routes.dart';
+import '../controller/registration_controller.dart';
 
 class SignUpUser extends StatefulWidget {
   const SignUpUser({super.key});
@@ -13,25 +14,26 @@ class SignUpUser extends StatefulWidget {
 }
 
 class _SignUpUserState extends State<SignUpUser> {
-  final RegistrationController controller =Get.put(RegistrationController());
+  final RegistrationAndLoginController controller =Get.put(RegistrationAndLoginController());
+  final PostController userController = Get.put(PostController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 60,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Choose username",
                 style: TextStyle(fontSize: 30),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "You can always change it later",
                 style: TextStyle(fontSize: 15),
@@ -39,14 +41,14 @@ class _SignUpUserState extends State<SignUpUser> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20,bottom: 10,top: 10),
-              child: Custom_Text_Form_Field(name: 'Username',controller: controller.usernameController,),
+              child: Custom_Text_Form_Field(name: 'Username',controller: controller.usernameController.value,),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20),
               child: Custom_Eleveted_Button(
                 label: 'Next',
                 onPressed: () {
-                  print("pressed");
+                  userController.addUserData();
                   Get.toNamed(App_Routes.PasswordScreen);
                 },
               ),

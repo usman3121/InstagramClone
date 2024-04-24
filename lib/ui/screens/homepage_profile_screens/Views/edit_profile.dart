@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram/services/controller/post_controller.dart';
-import 'package:instagram/services/controller/registration_controller.dart';
+import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
+import '../controller/edit_profile_controller.dart';
 
 class EditProfile extends StatefulWidget {
   final String? username, bio, docId;
@@ -13,13 +13,14 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  RegistrationController registerController = Get.put(RegistrationController());
-  Post_Controller userModel = Get.put(Post_Controller());
+
+  RegistrationAndLoginController registerController = Get.put(RegistrationAndLoginController());
+  final EditProfileController editController = Get.put(EditProfileController());
 
   @override
   void initState() {
-    registerController.usernameController.text = widget.username ?? 'username';
-    registerController.bioController.text = widget.bio ?? 'bio';
+    registerController.usernameController.value.text = widget.username ?? 'username';
+    registerController.bioController.value.text = widget.bio ?? 'bio';
 
     super.initState();
   }
@@ -39,15 +40,15 @@ class _EditProfileState extends State<EditProfile> {
             color: Colors.white,
           ),
           onPressed: () {
-            userModel.getUpdatedUserData(
-                registerController.usernameController.text.toString(),
-                widget.docId ?? '',
-                registerController.bioController.text.toString());
-            print(
-                'userNameController is: ${registerController.usernameController.text}, '
-                    'widget id is: ${widget.docId ?? ''}, '
-                    'bioController is: ${registerController.bioController.text}');
-
+            final String? docId = widget.docId;
+            if (docId != null && docId.isNotEmpty) {
+              editController.getUpdatedUserData(
+                registerController.usernameController.value.text.toString(),
+                docId,
+                registerController.bioController.value.text.toString(),
+              );
+            } else {
+            }
             Get.back();
           },
         ),
@@ -79,11 +80,11 @@ class _EditProfileState extends State<EditProfile> {
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: Colors.white), // Change the color here
+                        color: Colors.white),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: Colors.white), // Change the color here
+                        color: Colors.white),
                   ),
                   label: Text(
                     "Name",
@@ -96,15 +97,15 @@ class _EditProfileState extends State<EditProfile> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-                controller: registerController.usernameController,
+                controller: registerController.usernameController.value,
                 decoration: const InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: Colors.white), // Change the color here
+                        color: Colors.white),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: Colors.white), // Change the color here
+                        color: Colors.white),
                   ),
                   label: Text(
                     "Username",
@@ -117,15 +118,15 @@ class _EditProfileState extends State<EditProfile> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-                controller: registerController.bioController,
+                controller: registerController.bioController.value,
                 decoration: const InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: Colors.white), // Change the color here
+                        color: Colors.white),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: Colors.white), // Change the color here
+                        color: Colors.white),
                   ),
                   label: Text(
                     "Bio",

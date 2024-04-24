@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram/ui/components/utils.dart';
-import 'package:instagram/ui/router/app_routes.dart';
-import '../../../../services/controller/registration_controller.dart';
+import 'package:instagram/ui/utils/message%20toaster/utils.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';
+import '../../../config/router/app_routes.dart';
+import '../controller/registration_controller.dart';
+
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({super.key});
@@ -15,7 +16,7 @@ class PasswordScreen extends StatefulWidget {
 
 class _PasswordScreenState extends State<PasswordScreen> {
   bool _isChecked = false;
-  final RegistrationController controller =Get.put(RegistrationController());
+  final RegistrationAndLoginController controller =Get.put(RegistrationAndLoginController());
 
   @override
   Widget build(BuildContext context) {

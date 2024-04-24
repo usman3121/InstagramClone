@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:instagram/services/controller/registration_controller.dart';
+import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
 import 'package:instagram/services/model/post_model.dart';
-import '../../services/controller/post_controller.dart';
+import '../screens/homepage_profile_screens/controller/post_controller.dart';
 import '../../services/model/user_model.dart';
 import 'comment_list_widget.dart';
 import 'post_menu.dart';
@@ -13,10 +13,10 @@ class FeedPostCard extends StatelessWidget {
     Key? key, required this.userData
   }) : super(key: key);
 
-  final Post_Controller postController = Get.put(Post_Controller());
+  final PostController postController = Get.put(PostController());
   final List<UserModel> userData;
 
-  RegistrationController commentController = Get.put(RegistrationController());
+  RegistrationAndLoginController commentController = Get.put(RegistrationAndLoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -112,16 +112,13 @@ class FeedPostCard extends StatelessWidget {
                                   : Icon(Icons.favorite_border,
                                   color: Colors.white),
                               onPressed: () {
-                                print('likes getting pressed');
                                 postController
                                     .toggleLike(post.postId ?? '');
                                 if (postController
                                     .isPostLiked(post.postId ?? '')) {
-                                  print('likes increases');
                                   post.likeCount =
                                       (post.likeCount ?? 0) + 1;
                                 } else {
-                                  print('likes decreases');
                                   post.likeCount =
                                       (post.likeCount ?? 0) - 1;
                                 }

@@ -2,16 +2,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram/services/model/post_model.dart';
-import 'package:instagram/ui/router/app_routes.dart';
-import '../../../services/controller/imageController.dart';
-import '../../../services/controller/post_controller.dart';
+import '../../config/router/app_routes.dart';
+import 'controller/imageController.dart';
+import '../homepage_profile_screens/controller/post_controller.dart';
 import '../../../services/model/user_model.dart';
 import '../bottom_navigation_screen.dart';
 
 class CameraScreen extends StatelessWidget {
 
   CameraScreen({super.key});
- final Post_Controller postController = Get.put(Post_Controller());
+ final PostController postController = Get.put(PostController());
   final UserModel users = UserModel();
   final PostModel post =PostModel();
   @override
@@ -29,7 +29,7 @@ class CameraScreen extends StatelessWidget {
                 alignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon:  Icon(
+                    icon:  const Icon(
                       Icons.close,
                       color: Colors.white,
                     ),
@@ -87,8 +87,9 @@ class CameraScreen extends StatelessWidget {
                     GestureDetector(
                       onTap: ()async{
                         await controller.pickImageFromGallery();
-                        await postController.addPost();
-                        print(postController.addPost.toString());
+                         postController.addPost();
+                        await postController.addUserData();
+                        print(postController.addUserData().toString());
                         await Get.toNamed(App_Routes.HomePage);
 
                       },
@@ -172,7 +173,7 @@ class CameraScreen extends StatelessWidget {
         postController.update();
         //print("hello from user model : ${users.followers.toString()}");
         //Get.to(const BottomNavigationScreen());
-      },child: Icon(Icons.add),),
+      },child: const Icon(Icons.add),),
     );
   }
 }

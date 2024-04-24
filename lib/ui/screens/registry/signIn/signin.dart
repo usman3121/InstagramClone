@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:instagram/services/controller/registration_controller.dart';
-import 'package:instagram/ui/router/app_routes.dart';
-import '../../../../services/controller/post_controller.dart';
+import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';
+import '../../../config/router/app_routes.dart';
+import '../../homepage_profile_screens/controller/post_controller.dart';
+
+
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -15,8 +17,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final RegistrationController controller = Get.put(RegistrationController());
-  final Post_Controller postController = Get.put(Post_Controller());
+  final RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
+  final PostController postController = Get.put(PostController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +63,7 @@ class _SignInState extends State<SignIn> {
                   onPressed: () {
                     print("email is ${controller.emailController.text}");
                     print("password is ${controller.passwordController.text}");
-                    print("username is ${controller.usernameController.text}");
+                    print("username is ${controller.usernameController.value.text}");
                    // postController.addUserData();
                    // postController.addPost();
                    // print("posts data added succesfull in signin page");

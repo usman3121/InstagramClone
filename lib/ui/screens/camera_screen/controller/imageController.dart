@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:instagram/ui/components/utils.dart';
+import 'package:instagram/ui/utils/message%20toaster/utils.dart';
 import 'package:uuid/uuid.dart';
 
 class ImagePickerController extends GetxController {

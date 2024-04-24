@@ -2,16 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:instagram/ui/components/utils.dart';
+import 'package:instagram/ui/utils/message%20toaster/utils.dart';
 
-import '../../ui/router/app_routes.dart';
+import '../../../config/router/app_routes.dart';
 
-class RegistrationController extends GetxController {
+
+class RegistrationAndLoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController bioController = TextEditingController();
+  Rx<TextEditingController> usernameController = TextEditingController().obs;
+  Rx<TextEditingController> bioController = TextEditingController().obs;
   final TextEditingController commentController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -20,7 +21,7 @@ class RegistrationController extends GetxController {
     emailController.dispose();
     passwordController.dispose();
     mobileController.dispose();
-    usernameController.dispose();
+    usernameController.close();
     super.onClose();
   }
 
@@ -71,5 +72,13 @@ class RegistrationController extends GetxController {
     }, onError: (error, stackTrace) {
       Utils().toastMessage(error.toString());
     });
+  }
+  Future<void> logout() async {
+    try {
+      await auth.signOut();
+      Get.toNamed(App_Routes.signIn);
+    } catch (e) {
+      Utils().toastMessage(e.toString());
+    }
   }
 }
