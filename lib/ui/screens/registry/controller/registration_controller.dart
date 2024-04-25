@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:instagram/ui/utils/message%20toaster/utils.dart';
+import '../../../../config/router/app_routes.dart';
 
-import '../../../config/router/app_routes.dart';
 
 
 class RegistrationAndLoginController extends GetxController {
@@ -25,14 +24,6 @@ class RegistrationAndLoginController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getCurrentUserEmail() async {
-    String? currentEmail;
-    User? user = auth.currentUser;
-    if (user != null) {
-     currentEmail = user.email;
-    }
-  }
-
   void login() {
     auth
         .signInWithEmailAndPassword(
@@ -41,7 +32,7 @@ class RegistrationAndLoginController extends GetxController {
       Utils().toastMessage(value.user!.email.toString());
       emailController.clear();
       passwordController.clear();
-      Get.toNamed(App_Routes.HomePage);
+      Get.toNamed(AppRoutes.homePage);
     }).onError((error, stackTrace) {
       Utils().toastMessage(error.toString());
     });
@@ -53,7 +44,7 @@ class RegistrationAndLoginController extends GetxController {
             email: emailController.text, password: passwordController.text)
         .then((value) {
       Utils().toastMessage('Sign-up successful!');
-      Get.toNamed(App_Routes.HomePage);
+      Get.toNamed(AppRoutes.homePage);
     }).onError((error, stackTrace) {
       Utils().toastMessage(error.toString());
     });
@@ -63,7 +54,7 @@ class RegistrationAndLoginController extends GetxController {
     auth.userChanges().listen((User? user) {
       if (user == null) {
         debugPrint('User is currently signed out!');
-        Get.offNamed(App_Routes.signIn);
+        Get.offNamed(AppRoutes.signIn);
       } else {
         debugPrint('User is signed in!');
         Utils().toastMessage("User is signed in!");
@@ -76,7 +67,7 @@ class RegistrationAndLoginController extends GetxController {
   Future<void> logout() async {
     try {
       await auth.signOut();
-      Get.toNamed(App_Routes.signIn);
+      Get.toNamed(AppRoutes.signIn);
     } catch (e) {
       Utils().toastMessage(e.toString());
     }

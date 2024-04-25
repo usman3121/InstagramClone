@@ -7,12 +7,14 @@ class PostModel {
   String? imageUrl;
   RxList<CommentModel>? comments;
   int? likeCount ;
+  String? userId;
   PostModel({
     this.postId,
     this.caption,
     this.imageUrl,
     List<CommentModel>? comments,
-    this.likeCount
+    this.likeCount,
+    this.userId
   }): comments = RxList<CommentModel>.from(comments ?? []);
 
   void addComment(CommentModel comment) {
@@ -28,6 +30,7 @@ class PostModel {
       comments: (json['comments'] as List<dynamic>?)
           ?.map((commentJson) => CommentModel.fromJson(commentJson as Map<String, dynamic>))
           .toList(),
+        userId: json['userId']as String?,
     );
   }
 
@@ -37,6 +40,7 @@ class PostModel {
       'caption': caption,
       'imageUrl': imageUrl,
       'comments': comments?.map((comment) => comment.toJson()).toList() ?? [],
+      'userId': userId,
     };
   }
 }

@@ -265,3 +265,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+ SizedBox(
+                height: Get.height *0.09,
+                child: StreamBuilder<List<UserModel>>(
+                  stream: postController.fetchUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        final List<UserModel> userPosts = snapshot
+                            .data!
+                            .where((user) => user.userId == currentUserId)
+                            .toList();
+                        if (userPosts.isNotEmpty) {
+                          return ListView.builder(itemCount: userPosts.length,
+                          itemBuilder: (context, index) {
+                            final post = snapshot.data![index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(post.userName.toString()),
+                                  Text(post.bio.toString()),
+
+                                ],
+                              ),
+                            );
+
+                          },);
+                        } else {
+                          return const Center(child: Text('No posts available'));
+                        }
+                      } else {
+                        return const Center(child: Text('No posts available'));
+                      }
+                    }
+                  },
+                ),
+              ),

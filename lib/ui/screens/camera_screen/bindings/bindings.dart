@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
-import '../controller/imageController.dart';
+import '../controller/image_controller.dart';
 
-class cameraBindings implements Bindings {
+class CameraBindings implements Bindings {
 
   @override
   void dependencies() {

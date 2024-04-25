@@ -17,7 +17,7 @@ class _AddPhoneEmailState extends State<AddPhoneEmail> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(10),
         child: Container(),
-      ), // Set background color to black
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram/ui/screens/homepage_profile_screens/controller/post_controller.dart';
 import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
 
 import '../../services/model/user_model.dart';
@@ -26,7 +25,7 @@ class HomePageTopBar extends StatelessWidget {
         if (userData.isNotEmpty)
         Text(
           userData.first.userName ?? "",
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
         ),
         SizedBox(
           width: Get.width * 0.08,

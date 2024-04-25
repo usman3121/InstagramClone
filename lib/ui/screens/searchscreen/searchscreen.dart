@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 
 class CustomSearchBar extends StatelessWidget {
+  const CustomSearchBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,21 +16,20 @@ class CustomSearchBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 8),
             child: Icon(Icons.search, color: Colors.white),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search...',
                 border: InputBorder.none,
                 hintStyle: TextStyle(color: Colors.white)
 
               ),
               onChanged: (value) {
-                print('Searching for: $value');
               },
             ),
           ),
@@ -40,12 +41,14 @@ class CustomSearchBar extends StatelessWidget {
 
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Column(
         children: [
           SizedBox(   height: Get.height * 0.08,),
-          Center(
+          const Center(
             child:CustomSearchBar()
           ),
         ],

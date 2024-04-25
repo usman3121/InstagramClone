@@ -112,8 +112,7 @@ class InstagramPostMenu extends StatelessWidget {
             title: const Text('Delete',style: TextStyle(color: Colors.white,),),
             onTap: () async {
 
-                await postController!.deletePost(postId ?? '');
-                print(postId.toString());
+                await postController.deletePost(postId ?? '');
 
 
               //postController.deletePost();

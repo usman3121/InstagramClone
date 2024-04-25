@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'homepage_profile_screens/controller/post_controller.dart';
@@ -20,20 +19,7 @@ RegistrationAndLoginController commentController = Get.put(RegistrationAndLoginC
 
 class _InstaFeedState extends State<InstaFeed> {
   final PostController postController = Get.put(PostController());
-  final UserModel users = UserModel();
   List<UserModel> userData = [];
-
-/*
-  @override
-  void initState() {
-    super.initState();
-    fetchPostData();
-  }
-
-  Future<void> fetchPostData() async {
-    userData = await postController.getUserData();
-  }
-*/
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +30,6 @@ class _InstaFeedState extends State<InstaFeed> {
             SizedBox(height: Get.height * 0.03),
             const InstaTopBar(),
             StoriesBar(postController: postController),
-            //FeedPostCard(postController: postController, userData: userData),
-            //FeedPostCard(),
             FeedPostCard(userData: userData)
           ],
         ),

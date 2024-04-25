@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram/services/model/post_model.dart';
-import '../../config/router/app_routes.dart';
-import 'controller/imageController.dart';
+import '../../../config/router/app_routes.dart';
+import 'controller/image_controller.dart';
 import '../homepage_profile_screens/controller/post_controller.dart';
 import '../../../services/model/user_model.dart';
 import '../bottom_navigation_screen.dart';
@@ -37,7 +37,6 @@ class CameraScreen extends StatelessWidget {
                       //postController.addUserData();
                       postController.addPost();
                       //print("hello from user model : ${users.followers.toString()}");
-                      print("hello from post model printing image url: ${post.imageUrl.toString()}");
                       Get.to(const BottomNavigationScreen());
                     },
                   ),
@@ -89,8 +88,7 @@ class CameraScreen extends StatelessWidget {
                         await controller.pickImageFromGallery();
                          postController.addPost();
                         await postController.addUserData();
-                        print(postController.addUserData().toString());
-                        await Get.toNamed(App_Routes.HomePage);
+                        await Get.toNamed(AppRoutes.homePage);
 
                       },
                       child: Container(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Custom_Text_Form_Field extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   String name;
   final TextEditingController? controller;
   final bool obscureText;
-   Custom_Text_Form_Field({
+   CustomTextFormField({
     super.key, this.controller, required this.name,this.obscureText=false
   });
 

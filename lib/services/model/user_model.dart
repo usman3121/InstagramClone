@@ -45,7 +45,6 @@ class UserModel {
         userId: json['userId'] as String?,
       );
     } catch (e) {
-      print('Error in UserModel.fromJson: $e');
       return UserModel();
     }
   }

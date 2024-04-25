@@ -4,13 +4,13 @@ import 'package:instagram/services/model/comment_model.dart';
 class CommentListWidget extends StatelessWidget {
   final List<CommentModel>? posts; 
 
-  CommentListWidget({required this.posts});
+  const CommentListWidget({super.key, required this.posts});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments'),
+        title: const Text('Comments'),
       ),
       body: posts != null
           ? ListView.builder(
@@ -18,12 +18,12 @@ class CommentListWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text('User: ${posts![index].comment ?? "PostId"}',
-                      style: TextStyle(color: Colors.white)),
+                      style: const TextStyle(color: Colors.white)),
                   subtitle: Text(posts!.length.toString()),
                 );
               },
             )
-          : Center(
+          : const Center(
               child: Text('No comments available'),
             ),
     );

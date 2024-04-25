@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:instagram/services/authentication/firebaseservices.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../ui/screens/camera_screen/controller/imageController.dart';
+import '../../ui/screens/camera_screen/controller/image_controller.dart';
 import '../../ui/screens/registry/controller/registration_controller.dart';
 import '../../ui/utils/message toaster/utils.dart';
 import '../model/comment_model.dart';
@@ -11,7 +10,7 @@ import '../model/post_model.dart';
 
 class PostServics extends GetxController{
 
-  FirebaseServices _firebaseService = Get.put(FirebaseServices());
+  final FirebaseServices _firebaseService = Get.put(FirebaseServices());
   RxList<PostModel>? postModelRxList;
   RxMap likedPostIds = {}.obs;
   final RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
@@ -32,6 +31,7 @@ class PostServics extends GetxController{
           imageUrl: imageController.imageUrl,
           caption: 'this is a caption',
           postId: postId,
+          userId: _firebaseService.getCurrentUserID(),
         );
         model.addComment(newComment);
         postModelRxList?.add(model);
@@ -72,7 +72,7 @@ class PostServics extends GetxController{
           snapshot.docs.map((doc) => PostModel.fromJson(doc.data() as Map<String, dynamic>)).toList());
     } catch (e) {
       Utils().toastMessage(e.toString());
-      throw e;
+      rethrow;
     }
   }
 
@@ -123,11 +123,11 @@ class PostServics extends GetxController{
     RxList<PostModel> posts = <PostModel>[].obs;
     try {
       QuerySnapshot snapshot = await _firebaseService.userPostCollection().get();
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         PostModel model = PostModel.fromJson(data);
         posts.add(model);
-      });
+      }
     } catch (e) {
       Utils().toastMessage(e.toString());
     }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram/ui/utils/message%20toaster/utils.dart';
+import '../../../../config/router/app_routes.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';
-import '../../../config/router/app_routes.dart';
 import '../controller/registration_controller.dart';
 
 
@@ -24,18 +24,18 @@ class _PasswordScreenState extends State<PasswordScreen> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 60,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Create a password",
                 style: TextStyle(fontSize: 30),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
+            const Padding(
+              padding: EdgeInsets.only(
                 left: 40,
                 right: 40,
                 top: 8,
@@ -48,14 +48,14 @@ class _PasswordScreenState extends State<PasswordScreen> {
             Padding(
               padding: const EdgeInsets.only(
                   right: 20, left: 20, bottom: 1, top: 10),
-              child: Custom_Text_Form_Field(
+              child: CustomTextFormField(
                 name: 'password',controller: controller.passwordController,obscureText: true,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: CheckboxListTile(
-                title: Text(
+                title: const Text(
                   'Remember password',
                   style: TextStyle(color: Colors.white), // Text color
                 ),
@@ -66,7 +66,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   });
                 },
                 controlAffinity: ListTileControlAffinity.leading,
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 activeColor: Colors.blue,
                 tileColor: Colors.transparent,
                 checkColor: Colors.black,
@@ -74,14 +74,14 @@ class _PasswordScreenState extends State<PasswordScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Custom_Eleveted_Button(
+              child: CustomElevetedButton(
                 label: 'Next',
                 onPressed: () {
                   if (controller.passwordController.text.length < 6) {
                     Utils().toastMessage("Password must be at least 6 characters long");
                   } else {
                     controller.signUp();
-                    Get.toNamed(App_Routes.AddPhoneEmail);
+                    Get.toNamed(AppRoutes.addPhoneEmail);
                   }
                 },
               ),

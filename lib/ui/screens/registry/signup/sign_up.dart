@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram/ui/screens/homepage_profile_screens/controller/post_controller.dart';
+import '../../../../config/router/app_routes.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';
-import '../../../config/router/app_routes.dart';
 import '../controller/registration_controller.dart';
 
 class SignUpUser extends StatefulWidget {
@@ -41,15 +41,15 @@ class _SignUpUserState extends State<SignUpUser> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20,bottom: 10,top: 10),
-              child: Custom_Text_Form_Field(name: 'Username',controller: controller.usernameController.value,),
+              child: CustomTextFormField(name: 'Username',controller: controller.usernameController.value,),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Custom_Eleveted_Button(
+              child: CustomElevetedButton(
                 label: 'Next',
                 onPressed: () {
                   userController.addUserData();
-                  Get.toNamed(App_Routes.PasswordScreen);
+                  Get.toNamed(AppRoutes.passwordScreen);
                 },
               ),
             )

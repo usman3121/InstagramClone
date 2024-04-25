@@ -25,9 +25,9 @@ class InstaTopBar extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left:100,top: 10,right:10),
-            child: IconButton(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.heart,color: Colors.white),),
+            child: IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.heart,color: Colors.white),),
           ),
-          IconButton(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.facebookMessenger,color: Colors.white,),),
+          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.facebookMessenger,color: Colors.white,),),
         ],
       ),
     );

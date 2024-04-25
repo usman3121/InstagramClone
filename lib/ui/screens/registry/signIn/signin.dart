@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
+import '../../../../config/router/app_routes.dart';
 import '../../../components/custom_text_form_field.dart';
 import '../../../components/cutom_button.dart';
-import '../../../config/router/app_routes.dart';
 import '../../homepage_profile_screens/controller/post_controller.dart';
 
 
@@ -42,7 +42,7 @@ class _SignInState extends State<SignIn> {
               Padding(
                 padding: const EdgeInsets.only(
                     right: 20, left: 20, bottom: 10, top: 10),
-                child: Custom_Text_Form_Field(
+                child: CustomTextFormField(
                   controller: controller.emailController,
                   name: 'Username or email',
                 ),
@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
               Padding(
                 padding: const EdgeInsets.only(
                     right: 20, left: 20, bottom: 10, top: 10),
-                child: Custom_Text_Form_Field(
+                child: CustomTextFormField(
                   controller: controller.passwordController,
                   name: 'password',obscureText: true,
                 ),
@@ -58,20 +58,11 @@ class _SignInState extends State<SignIn> {
               Padding(
                 padding: const EdgeInsets.only(
                     right: 20, left: 20, bottom: 10, top: 10),
-                child: Custom_Eleveted_Button(
+                child: CustomElevetedButton(
                   label: 'Log In',
                   onPressed: () {
-                    print("email is ${controller.emailController.text}");
-                    print("password is ${controller.passwordController.text}");
-                    print("username is ${controller.usernameController.value.text}");
-                   // postController.addUserData();
-                   // postController.addPost();
-                   // print("posts data added succesfull in signin page");
-                    //postController.getUserData();
-                    postController.getPosts();
-
+                   // postController.getPosts();
                     controller.login();
-                    print("login succesfull ");
 
                   },
                 ),
@@ -119,7 +110,7 @@ class _SignInState extends State<SignIn> {
               ),
               Padding(
                 padding:  const EdgeInsets.only(right: 20, left: 20, top: 10,bottom: 120),
-                child: Custom_Eleveted_Button(onPressed :(){} ,label:'Continue as ...' ,),
+                child: CustomElevetedButton(onPressed :(){} ,label:'Continue as ...' ,),
               ),
           const Divider(),
           Row(
@@ -129,7 +120,7 @@ class _SignInState extends State<SignIn> {
                   style: TextStyle(fontSize: 12, color: Colors.white)),
               TextButton(
                   onPressed: () {
-                  Get.toNamed(App_Routes.signUp);
+                  Get.toNamed(AppRoutes.signUp);
                     },
                   child: const Text(
                     "Sign Up",

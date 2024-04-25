@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:instagram/ui/widgets/stories_bar.dart';
 import 'package:instagram/ui/screens/homepage_profile_screens/Views/edit_profile.dart';
 import '../../../../services/authentication/firebaseservices.dart';
-import '../../../../services/authentication/userServices.dart';
+import '../../../../services/authentication/user_services.dart';
 import '../controller/edit_profile_controller.dart';
 import '../controller/post_controller.dart';
 import '../../registry/controller/registration_controller.dart';
@@ -33,11 +33,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       Get.put(RegistrationAndLoginController());
   final EditProfileController editController = Get.put(EditProfileController());
 
+  String? currentUserId;
+
+
   @override
   void initState() {
     super.initState();
     fetchUserData();
     fetchPostData();
+    currentUserId = firebaseServices.getCurrentUserID();
   }
 
   Future<void> fetchUserData() async {
@@ -111,20 +115,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Obx(() => Text(editController.userName.toString())),
                     Obx(() => Text(editController.bio.toString())),
-              /*      if (userData.isNotEmpty && userData[0].bio != null)
-                      Obx(() => Text(userData[0].bio.toString())),
-                    if (userData.isNotEmpty && userData[0].userName != null)
-                      Text(userData[0].userName.toString()),*/
-                                              /*
-                                Obx(() => Text(registerController
-                                    .usernameController.value.text
-                                    .toString())),
-                                Obx(() => Text(registerController.bioController.value.text
-                                    .toString())),*/
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(5),
                 child: Row(
@@ -144,13 +137,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         onPressed: () {
-                          print('bio is: ${userData[0].bio}, '
-                              'username  is: ${userData[0].userName ?? ''}, '
-                              'user id is is: ${firebaseServices.getCurrentUserID()}');
                           Get.to(EditProfile(
                             bio: userData[0].bio,
                             username: userData[0].userName,
-                            docId: userService.firebaseServices.getCurrentUserID(),
+                            docId:
+                                userService.firebaseServices.getCurrentUserID(),
                           ));
                         },
                         child: const Text(
@@ -219,52 +210,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: StreamBuilder<List<PostModel>>(
                                   stream: postController.fetchPost(),
                                   builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                          child: CircularProgressIndicator());
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return const Center(child: CircularProgressIndicator());
                                     } else if (snapshot.hasError) {
-                                      return Center(
-                                          child:
-                                              Text('Error: ${snapshot.error}'));
-                                    } else if (snapshot.hasData &&
-                                        snapshot.data!.isNotEmpty) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Get.to(const OpenPostScreen());
-                                        },
-                                        child: GridView.builder(
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            crossAxisSpacing: 8.0,
-                                            mainAxisSpacing: 8.0,
-                                          ),
-                                          itemCount: snapshot.data!.length,
-                                          itemBuilder: (context, index) {
-                                            final post = snapshot.data![index];
-                                            return Card(
-                                              color: Colors.black,
-                                              child: Image.network(
-                                                post.imageUrl ??
-                                                    'https://via.placeholder.com/150',
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      );
+                                      return Center(child: Text('Error: ${snapshot.error}'));
                                     } else {
-                                      return const Center(
-                                          child: Text('No posts available'));
+                                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                        final List<PostModel> userPosts = snapshot
+                                            .data!
+                                            .where((post) => post.userId == currentUserId)
+                                            .toList();
+                                        if (userPosts.isNotEmpty) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Get.to(const OpenPostScreen());
+                                            },
+                                            child: GridView.builder(
+                                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 3,
+                                                crossAxisSpacing: 8.0,
+                                                mainAxisSpacing: 8.0,
+                                              ),
+                                              itemCount: userPosts.length,
+                                              itemBuilder: (context, index) {
+                                                final post = userPosts[index];
+                                                return Card(
+                                                  color: Colors.black,
+                                                  child: Image.network(
+                                                    post.imageUrl ?? 'https://via.placeholder.com/150',
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        } else {
+                                          return const Center(child: Text('No posts available'));
+                                        }
+                                      } else {
+                                        return const Center(child: Text('No posts available'));
+                                      }
                                     }
                                   },
                                 ),
-                              ),
+                              )
+
                             ],
                           ),
-                          const tabTest(),
-                          const tabTest(),
+                          const TabTest(),
+                          const TabTest(),
                         ],
                       ),
                     ),

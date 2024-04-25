@@ -20,8 +20,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   final UserModel users = UserModel();
 
   static final List<Widget> _pages = [
-     InstaFeed(),
-    SearchScreen(),
+     const InstaFeed(),
+    const SearchScreen(),
     CameraScreen(),
     const ProfileScreen(),
     const ProfileScreen(),
@@ -37,14 +37,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         break;
       case 3:
         postController.getUserData();
-        print("hello from user model : ${users.toJson()}");
 
         break;
       case 4:
-        print(
-            "User Image is getting add : ${users.profileImagePath.toString()}");
         postController.getUserData();
-        print("hello from user model : ${users.followers.toString()}");
         break;
     }
     setState(() {

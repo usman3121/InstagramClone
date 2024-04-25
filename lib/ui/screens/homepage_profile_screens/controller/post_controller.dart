@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:instagram/services/authentication/firebaseservices.dart';
-import 'package:instagram/services/authentication/postServices.dart';
-import 'package:instagram/ui/screens/camera_screen/controller/imageController.dart';
+import 'package:instagram/services/authentication/post_services.dart';
+import 'package:instagram/ui/screens/camera_screen/controller/image_controller.dart';
 import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
 import 'package:instagram/services/model/post_model.dart';
 import 'package:instagram/services/model/user_model.dart';
-import '../../../../services/authentication/userServices.dart';
+import '../../../../services/authentication/user_services.dart';
 import '../../../utils/message toaster/utils.dart';
 
 
@@ -38,7 +37,15 @@ class PostController extends GetxController {
       return postServices.fetchPost();
     } catch (e) {
       Utils().toastMessage(e.toString());
-      throw e;
+      rethrow;
+    }
+  }
+  Stream<List<UserModel>> fetchUser() {
+    try {
+      return userServices.fetchUser();
+    } catch (e) {
+      Utils().toastMessage(e.toString());
+      rethrow;
     }
   }
 
@@ -84,7 +91,7 @@ class PostController extends GetxController {
       return userData;
     } catch (e) {
       Utils().toastMessage(e.toString());
-      throw e;
+      rethrow;
     }
   }
 
@@ -94,15 +101,12 @@ class PostController extends GetxController {
       if (userId.isEmpty) {
         throw Exception('User ID cannot be empty');
       }
-      print ('user id is: $userId');
       CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
       await userCollection.doc(userId).update({
         'userName': userName,
         'bio': bio,
       });
-      print('updated done:');
     } catch (e) {
-      print('there is an error: $e');
       Utils().toastMessage(e.toString());
     }
   }

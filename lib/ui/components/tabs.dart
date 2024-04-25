@@ -32,20 +32,19 @@ class PhoneNumberTab extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 22, right: 5, bottom: 5),
                   child: IntlPhoneField(
                     controller: controller.mobileController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Phone Number',
                     ),
                     initialCountryCode: 'IN',
                     onChanged: (phone) {
-                      print(phone.completeNumber);
                     },
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
+            const Padding(
+              padding: EdgeInsets.only(
                   right: 20, left: 20, bottom: 10, top: 10),
               child: Wrap(
                 children: [
@@ -61,7 +60,7 @@ class PhoneNumberTab extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                   right: 20, left: 20, bottom: 10, top: 10),
-              child: Custom_Eleveted_Button(label: "Next", onPressed: () {}),
+              child: CustomElevetedButton(label: "Next", onPressed: () {}),
             )
           ],
         ),
@@ -81,7 +80,7 @@ class EmailAddressTab extends StatelessWidget {
           Padding(
             padding:
                 const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 10),
-            child: Custom_Text_Form_Field(
+            child: CustomTextFormField(
               name: 'Email address',
               controller: controller.emailController,
             ),
@@ -89,7 +88,7 @@ class EmailAddressTab extends StatelessWidget {
           Padding(
             padding:
                 const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 10),
-            child: Custom_Eleveted_Button(
+            child: CustomElevetedButton(
                 label: "SignUp",
                 onPressed: () {
                   controller.signUp();
@@ -100,8 +99,8 @@ class EmailAddressTab extends StatelessWidget {
     );
   }
 }
-class tabTest extends StatelessWidget {
-  const tabTest({super.key});
+class TabTest extends StatelessWidget {
+  const TabTest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +113,12 @@ class tabTest extends StatelessWidget {
 class ImageGrid extends StatelessWidget {
   final String images;
 
-  const ImageGrid({Key? key, required this.images}) : super(key: key);
+  const ImageGrid({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 4.0,
         mainAxisSpacing: 4.0,

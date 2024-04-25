@@ -50,7 +50,6 @@ class _OpenPostScreenState extends State<OpenPostScreen> {
         ),backgroundColor: Colors.black,),
       body: Column(
         children: [
-        /*  FeedPostCard(*//*postController: postController, userData: userData,posts: postData,*//*),*/
           FeedPostCard(userData: userData)
 
         ],
