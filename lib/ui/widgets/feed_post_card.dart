@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:instagram/services/authentication/user_services.dart';
 import 'package:instagram/ui/screens/registry/controller/registration_controller.dart';
 import 'package:instagram/services/model/post_model.dart';
+import 'package:video_player/video_player.dart';
+import '../screens/camera_screen/widgets/videoplayerwidget.dart';
 import '../screens/homepage_profile_screens/controller/post_controller.dart';
 import '../../services/model/user_model.dart';
 import 'comment_list_widget.dart';
+
 import 'post_menu.dart';
 
 class FeedPostCard extends StatelessWidget {
@@ -13,7 +16,7 @@ class FeedPostCard extends StatelessWidget {
   final UserServices userServices = Get.put(UserServices());
   final RegistrationAndLoginController commentController = Get.put(RegistrationAndLoginController());
   final List<UserModel> userData;
-
+  late VideoPlayerController _controller;
   FeedPostCard({Key? key, required this.userData}) : super(key: key);
 
   @override
@@ -63,6 +66,7 @@ class FeedPostCard extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 20),
                                         Text(user.userName ?? ''),
+                                        //Text(post.videoUrl ?? ''),
                                       ],
                                     ),
                                   ),
@@ -82,12 +86,16 @@ class FeedPostCard extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: Get.height * 0.5,
-                                child: Image.network(
-                                  post.imageUrl ?? 'https://via.placeholder.com/150',
+                              // In FeedPostCard's itemBuilder
+                               SizedBox(
+                                height: Get.height * 0.7,
+                                child: post.imageUrl != ''
+                                    ? Image.network(
+                                  post.imageUrl!,
                                   fit: BoxFit.cover,
-                                ),
+                                )
+                                    : post.videoUrl != ''
+                                    ? VideoPlayerWidget(videoUrl: post.videoUrl!) :Text('no video found')
                               ),
                               ButtonBar(
                                 alignment: MainAxisAlignment.start,
@@ -98,7 +106,6 @@ class FeedPostCard extends StatelessWidget {
                                         : const Icon(Icons.favorite_border, color: Colors.white),
                                     onPressed: () {
                                       postController.toggleLike(post.postId ?? '');
-                                      // Update like count
                                     },
                                   ),
                                   IconButton(

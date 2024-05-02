@@ -11,8 +11,8 @@ class FirebaseServices extends GetxController{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxMap likedPostIds = {}.obs;
   final RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
-  final ImagePickerController imageController =
-  Get.put(ImagePickerController());
+  final MediaController imageController =
+  Get.put(MediaController());
 
 
   CollectionReference userPostCollection() {

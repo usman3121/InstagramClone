@@ -6,6 +6,6 @@ class CameraBindings implements Bindings {
 
   @override
   void dependencies() {
-    Get.lazyPut(() => ImagePickerController());
+    Get.lazyPut(() => MediaController());
     }
 }

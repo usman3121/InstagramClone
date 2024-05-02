@@ -15,8 +15,8 @@ class PostController extends GetxController {
   FirebaseServices services = Get.put(FirebaseServices());
   final RegistrationAndLoginController controller =
       Get.put(RegistrationAndLoginController());
-  final ImagePickerController imageController =
-      Get.put(ImagePickerController());
+  final MediaController imageController =
+      Get.put(MediaController());
   RxList<PostModel>? postModelRxList;
   final PostServics postServices = Get.put(PostServics());
   final UserServices userServices = Get.put(UserServices());

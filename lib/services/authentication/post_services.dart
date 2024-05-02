@@ -14,8 +14,8 @@ class PostServics extends GetxController{
   RxList<PostModel>? postModelRxList;
   RxMap likedPostIds = {}.obs;
   final RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
-  final ImagePickerController imageController =
-  Get.put(ImagePickerController());
+  final MediaController imageController =
+  Get.put(MediaController());
 
 
 
@@ -24,11 +24,13 @@ class PostServics extends GetxController{
       var uuid = const Uuid();
       String postId = uuid.v1();
       String? profileImagePath = imageController.imageUrl;
-      if (profileImagePath.isNotEmpty) {
+      String? profileVedioPath = imageController.videoUrl;
+      if (profileImagePath.isNotEmpty || profileVedioPath.isNotEmpty ) {
         CommentModel newComment =
         CommentModel(comment: controller.commentController.text);
         PostModel model = PostModel(
           imageUrl: imageController.imageUrl,
+          videoUrl: imageController.videoUrl,
           caption: 'this is a caption',
           postId: postId,
           userId: _firebaseService.getCurrentUserID(),

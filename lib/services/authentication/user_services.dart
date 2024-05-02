@@ -10,8 +10,8 @@ class UserServices extends GetxController{
 
   RxList<UserModel> userData = <UserModel>[].obs;
   final RegistrationAndLoginController controller = Get.put(RegistrationAndLoginController());
-  final ImagePickerController imageController =
-  Get.put(ImagePickerController());
+  final MediaController imageController =
+  Get.put(MediaController());
   final FirebaseServices firebaseServices =Get.put(FirebaseServices());
   var userName =''.obs;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

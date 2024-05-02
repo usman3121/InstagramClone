@@ -4,6 +4,7 @@ import 'package:instagram/ui/widgets/stories_bar.dart';
 import 'package:instagram/ui/screens/homepage_profile_screens/Views/edit_profile.dart';
 import '../../../../services/authentication/firebaseservices.dart';
 import '../../../../services/authentication/user_services.dart';
+import '../../camera_screen/widgets/videoplayerwidget.dart';
 import '../controller/edit_profile_controller.dart';
 import '../controller/post_controller.dart';
 import '../../registry/controller/registration_controller.dart';
@@ -236,10 +237,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 final post = userPosts[index];
                                                 return Card(
                                                   color: Colors.black,
-                                                  child: Image.network(
-                                                    post.imageUrl ?? 'https://via.placeholder.com/150',
+                                                  child: post.imageUrl != ''
+                                                      ? Image.network(
+                                                    post.imageUrl!,
                                                     fit: BoxFit.cover,
-                                                  ),
+                                                  )
+                                                      : post.videoUrl != ''
+                                                      ? VideoPlayerWidget(videoUrl: post.videoUrl!) :Text('no video found')
                                                 );
                                               },
                                             ),

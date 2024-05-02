@@ -1,22 +1,25 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:instagram/services/model/post_model.dart';
 import '../../../config/router/app_routes.dart';
+import '../../../services/background/backgroundservices.dart';
 import 'controller/image_controller.dart';
 import '../homepage_profile_screens/controller/post_controller.dart';
 import '../../../services/model/user_model.dart';
 import '../bottom_navigation_screen.dart';
 
 class CameraScreen extends StatelessWidget {
-
   CameraScreen({super.key});
- final PostController postController = Get.put(PostController());
+
+  final PostController postController = Get.put(PostController());
   final UserModel users = UserModel();
-  final PostModel post =PostModel();
+  final PostModel post = PostModel();
+
   @override
   Widget build(BuildContext context) {
-    final ImagePickerController controller = Get.put(ImagePickerController());
+    final MediaController controller = Get.put(MediaController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -29,14 +32,12 @@ class CameraScreen extends StatelessWidget {
                 alignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon:  const Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      //postController.addUserData();
                       postController.addPost();
-                      //print("hello from user model : ${users.followers.toString()}");
                       Get.to(const BottomNavigationScreen());
                     },
                   ),
@@ -60,9 +61,9 @@ class CameraScreen extends StatelessWidget {
                   crossAxisCount: 1,
                   children: [
                     GestureDetector(
-                      onTap: () async{
+                      onTap: () async {
                         await controller.pickImageFromCamera();
-                         postController.addPost();
+                        postController.addPost();
                       },
                       child: Container(
                         width: 150,
@@ -84,12 +85,11 @@ class CameraScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: ()async{
+                      onTap: () async {
                         await controller.pickImageFromGallery();
-                         postController.addPost();
+                        postController.addPost();
                         await postController.addUserData();
                         await Get.toNamed(AppRoutes.homePage);
-
                       },
                       child: Container(
                         width: 150,
@@ -111,6 +111,10 @@ class CameraScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
+                      onTap: () async {
+                        await controller.pickVideoFromGallery();
+                        await Get.toNamed(AppRoutes.homePage);
+                      },
                       child: Container(
                         width: 150,
                         padding: const EdgeInsets.all(8),
@@ -142,6 +146,14 @@ class CameraScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Obx(
+                () => Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: LinearProgressIndicator(
+                      value: controller.uploadProgress.value),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Obx(
                 () => SizedBox(
                   height: Get.height * 5,
                   child: GridView.builder(
@@ -165,13 +177,14 @@ class CameraScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        //postController.addUserData();
-        //postController.addPost();
-        postController.update();
-        //print("hello from user model : ${users.followers.toString()}");
-        //Get.to(const BottomNavigationScreen());
-      },child: const Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await initializeService();
+          FlutterBackgroundService().invoke('setAsBackground');
+          postController.addPost();
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
